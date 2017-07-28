@@ -19,13 +19,10 @@ public class TransactionService {
     }
 
     public void addTransaction(Transaction transaction) throws TooOldTransactionException {
-
-        if (transaction.getTimestamp() < Instant.now().minusSeconds(60).toEpochMilli())
+        if (transaction.getTimestamp() >= Instant.now().minusSeconds(60).toEpochMilli()) {
+            new Thread(() ->  transactionStore.addTransaction(transaction)).start();
+        } else {
             throw new TooOldTransactionException();
-
-        transactionStore.addTransaction(transaction);
-
+        }
     }
-
-
 }

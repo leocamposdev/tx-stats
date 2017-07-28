@@ -21,7 +21,6 @@ public class StatisticEndpoint {
 
     @RequestMapping(value = "/statistics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Statistic> getStatistic() {
-
         return ResponseEntity.ok(statisticService.getStatistic());
 
     }

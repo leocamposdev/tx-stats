@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.time.Instant;
 
-public class ServiceTest {
+public class TransactionServiceTest {
 
     private TransactionStore transactionStore;
 
@@ -20,17 +20,7 @@ public class ServiceTest {
     @Test(expected = TooOldTransactionException.class)
     public void shouldThrowExceptionForTooOldTransaction() throws Exception {
         TransactionService transactionService = new TransactionService(transactionStore);
-        Transaction tx = new Transaction();
-        tx.setAmount(12.1);
-        tx.setTimestamp(Instant.now().toEpochMilli()-60001);
+        Transaction tx = new Transaction(Instant.now().toEpochMilli()-60001, 1);
         transactionService.addTransaction(tx);
     }
-
-    @Test
-    public void shouldGenerateStatistics() throws Exception {
-
-
-
-    }
-
 }

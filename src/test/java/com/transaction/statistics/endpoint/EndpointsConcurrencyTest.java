@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @AutoConfigureMockMvc
-public class StatisticEndpointTest {
+public class EndpointsConcurrencyTest {
 
     @Autowired
     private MockMvc mvc;
@@ -28,22 +28,29 @@ public class StatisticEndpointTest {
     private Gson gson = new Gson();
 
     @Test
-    public void shouldGetStatistics() throws Exception {
+    public void shouldPostTransactions() throws Exception {
 
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 500; i++) {
             String json = gson.toJson(new Transaction(Instant.now().toEpochMilli(), i));
+
             mvc.perform(MockMvcRequestBuilders
                     .post("/transactions")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(json))
                     .andExpect(status().isOk());
         }
-
-        mvc.perform(MockMvcRequestBuilders
-                .get("/statistics")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
     }
 
+    @Test
+    public void shouldGetStatistics() throws Exception {
 
+        for (int i = 1; i <= 500; i++) {
+            Thread.sleep(10);
+            mvc.perform(MockMvcRequestBuilders
+                    .get("/statistics")
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+        }
+
+    }
 }
