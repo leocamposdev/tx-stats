@@ -1,5 +1,10 @@
 ### Transaction Statistics
 
+**RUN WITH** 
+
+mvn spring-boot:run
+
+
 **Services**
 
 POST /transactions
