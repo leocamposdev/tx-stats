@@ -2,23 +2,28 @@ package com.transaction.statistics.service;
 
 import com.transaction.statistics.exception.TooOldTransactionException;
 import com.transaction.statistics.model.Transaction;
+import com.transaction.statistics.model.TransactionStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
 @Service
 public class TransactionService {
-    private static long SIXTY_SECONDS = 60000;
+
+    private TransactionStore transactionStore;
+
+    @Autowired
+    public TransactionService(TransactionStore transactionStore){
+        this.transactionStore = transactionStore;
+    }
 
     public void addTransaction(Transaction transaction) throws TooOldTransactionException {
 
-        Instant instant = Instant.now();
-        long now = instant.toEpochMilli();
-        if (transaction.getTimestamp() < now - SIXTY_SECONDS)
+        if (transaction.getTimestamp() < Instant.now().minusSeconds(60).toEpochMilli())
             throw new TooOldTransactionException();
 
-
-
+        transactionStore.addTransaction(transaction);
 
     }
 

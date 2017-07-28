@@ -16,17 +16,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @AutoConfigureMockMvc
-public class TransactionControllerTest {
+public class StatisticEndpointTest {
 
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    public void shouldAddTransaction() throws Exception {
 
+    @Test
+    public void shouldGenerateStatistics() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                .post("/transactions")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .get("/statistics")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

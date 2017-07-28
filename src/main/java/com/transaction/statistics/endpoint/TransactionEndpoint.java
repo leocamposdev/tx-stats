@@ -15,13 +15,8 @@ public class TransactionEndpoint {
     @RequestMapping(value = "/transactions", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity postTransaction(@RequestBody Transaction transaction) {
 
-        /*
 
-        201 - in case of success
-         204 - if transaction is older than 60 seconds
-
-         */
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.ok().body(null);
 
 
     }
